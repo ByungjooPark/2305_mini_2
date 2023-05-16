@@ -8,6 +8,11 @@
 </head>
 <body>
 	Shop Main
-	<a href="/user/login">로그인</a>
+	<?php if(isset($this->loginFlg)) { ?>
+		<a href="/user/logout">로그아웃</a>
+	<?php } else {?>
+		<a href="/user/login">로그인</a>
+		<a href="/user/regist">회원가입</a>
+	<?php }?>
 </body>
 </html>
