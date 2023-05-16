@@ -40,11 +40,14 @@ class UserController extends Controller {
 	public function registPost() {
 		$arrPost = $_POST;
 		$arrChkErr = [];
+		$arrPost["pw"] = "";
+		$arrPost["pwChk"] = "";
 
 		// 유효성체크
 		// ID 글자수 체크
 		if(mb_strlen($arrPost["id"]) === 0 || mb_strlen($arrPost["id"]) > 12) {
 			$arrChkErr["id"] = "ID는 12글자 이하로 입력해 주세요.";
+			$arrPost["id"] = "";
 		}
 		// ID 영문숫자 체크 (이거는 한번 해보세요.)
 
@@ -62,12 +65,14 @@ class UserController extends Controller {
 		// NAME 글자수 체크
 		if(mb_strlen($arrPost["name"]) === 0 || mb_strlen($arrPost["name"]) > 30) {
 			$arrChkErr["name"] = "이름을 30글자 이하로 입력해 주세요.";
+			$arrPost["name"] = "";
 		}
 
 		// 유효성체크 에러일 경우
 		if(!empty($arrChkErr)) {
 			// 에러메세지 셋팅
 			$this->addDynamicProperty('arrError', $arrChkErr);
+			$this->addDynamicProperty("inputData", $arrPost);
 			return "regist"._EXTENSION_PHP;
 		}
 
@@ -76,7 +81,9 @@ class UserController extends Controller {
 		// 유저 유무 체크
 		if(count($result) !== 0) {
 			$errMsg = "입력하신 ID가 사용중입니다.";
+			$arrPost["id"] = "";
 			$this->addDynamicProperty("errMsg", $errMsg);
+			$this->addDynamicProperty("inputData", $arrPost);
 			// 회원가입페이지 페이지
 			return "regist"._EXTENSION_PHP;
 		}
