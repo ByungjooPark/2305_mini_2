@@ -40,8 +40,6 @@ class UserController extends Controller {
 	public function registPost() {
 		$arrPost = $_POST;
 		$arrChkErr = [];
-		$arrPost["pw"] = "";
-		$arrPost["pwChk"] = "";
 
 		// 유효성체크
 		// ID 글자수 체크
@@ -50,12 +48,18 @@ class UserController extends Controller {
 			$arrPost["id"] = "";
 		}
 		// ID 영문숫자 체크 (이거는 한번 해보세요.)
+		$patten = "/[^a-zA-Z0-9]/";
+		if(preg_match($patten, $arrPost["id"]) !== 0) {
+			$arrChkErr["id"] = "ID는 영어 대문자, 영어 소문자, 숫자로만 입력해 주세요.";
+			$arrPost["id"] = "";
+		}
 
 		// PW 글자수 체크
 		if(mb_strlen($arrPost["pw"]) < 8 || mb_strlen($arrPost["pw"]) > 20) {
 			$arrChkErr["pw"] = "비밀번호는 8~20글자로 입력해 주세요.";
 		}
 		// PW 영문숫자특수문자 체크 (이거는 한번 해보세요.)
+
 
 		// 비밀번호와 비밀번호체크 확인
 		if($arrPost["pw"] !== $arrPost["pwChk"]) {
@@ -67,6 +71,10 @@ class UserController extends Controller {
 			$arrChkErr["name"] = "이름을 30글자 이하로 입력해 주세요.";
 			$arrPost["name"] = "";
 		}
+
+		// PW는 화면에 공란으로 표시하기위해 빈문자열로 재설정
+		$arrPost["pw"] = "";
+		$arrPost["pwChk"] = "";
 
 		// 유효성체크 에러일 경우
 		if(!empty($arrChkErr)) {

@@ -16,7 +16,7 @@ class UserModel extends Model{
 		
 		// PW 추가할 경우
 		if($pwFlg) {
-			$prepare[":pw"] = $arrUserInfo["pw"];
+			$prepare[":pw"] = base64_encode($arrUserInfo["pw"]);
 		}
 		
 		try {
@@ -37,7 +37,7 @@ class UserModel extends Model{
 
 		$prepare = [
 			":u_id" => $arrUserInfo["id"]
-			, ":u_pw" => $arrUserInfo["pw"]
+			, ":u_pw" => base64_encode($arrUserInfo["pw"])
 			, ":u_name" => $arrUserInfo["name"]
 		];
 
